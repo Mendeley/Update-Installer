@@ -4,13 +4,13 @@
 #include "FileUtils.h"
 #include "Log.h"
 #include "ProcessUtils.h"
-#include "UpdateObserver.h"
+#include "UpdateController.h"
 
 UpdateInstaller::UpdateInstaller()
 : m_mode(Setup)
 , m_waitPid(0)
 , m_script(0)
-, m_observer(0)
+, m_controller(0)
 , m_forceElevated(false)
 {
 }
@@ -64,10 +64,10 @@ std::list<std::string> UpdateInstaller::updaterArgs() const
 
 void UpdateInstaller::reportError(const std::string& error)
 {
-	if (m_observer)
+	if (m_controller)
 	{
-		m_observer->updateError(error);
-		m_observer->updateFinished();
+		m_controller->installError.emit(error);
+		m_controller->finished.emit();
 	}
 }
 
@@ -213,19 +213,19 @@ void UpdateInstaller::run() throw ()
 				LOG(Error,"Error reverting partial update " + std::string(exception.what()));
 			}
 
-			if (m_observer)
+			if (m_controller)
 			{
 				if (friendlyError.empty())
 				{
 					friendlyError = error;
 				}
-				m_observer->updateError(friendlyError);
+				m_controller->installError.emit(friendlyError);
 			}
 		}
 
-		if (m_observer)
+		if (m_controller)
 		{
-			m_observer->updateFinished();
+			m_controller->finished.emit();
 		}
 	}
 }
@@ -319,11 +319,11 @@ void UpdateInstaller::installFiles()
 	{
 		installFile(*iter);
 		++filesInstalled;
-		if (m_observer)
+		if (m_controller)
 		{
 			int toInstallCount = static_cast<int>(m_script->filesToInstall().size());
 			double percentage = ((1.0 * filesInstalled) / toInstallCount) * 100.0;
-			m_observer->updateProgress(static_cast<int>(percentage));
+			m_controller->installProgress.emit(static_cast<int>(percentage));
 		}
 	}
 }
@@ -395,9 +395,9 @@ bool UpdateInstaller::checkAccess()
 	}
 }
 
-void UpdateInstaller::setObserver(UpdateObserver* observer)
+void UpdateInstaller::setController(UpdateController* controller)
 {
-	m_observer = observer;
+	m_controller = controller;
 }
 
 void UpdateInstaller::restartMainApp()

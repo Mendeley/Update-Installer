@@ -2,6 +2,7 @@
 
 #include "Log.h"
 #include "StringUtils.h"
+#include "UpdateController.h"
 
 #include <dlfcn.h>
 #include <errno.h>
@@ -41,9 +42,12 @@ bool extractFileFromBinary(const char* path, const void* buffer, size_t length)
 	return true;
 }
 
-UpdateDialogGtkWrapper::UpdateDialogGtkWrapper()
+UpdateDialogGtkWrapper::UpdateDialogGtkWrapper(UpdateController* controller)
 : m_dialog(0)
 {
+	controller->installProgress.connect(this, &UpdateDialogGtkWrapper::updateProgress);
+	controller->installError.connect(this, &UpdateDialogGtkWrapper::updateError);
+	controller->finished.connect(this, &UpdateDialogGtkWrapper::updateFinished);
 }
 
 bool UpdateDialogGtkWrapper::init(int argc, char** argv)

@@ -12,6 +12,7 @@ option(SIGN_UPDATER OFF)
 
 include_directories(external)
 include_directories(external/TinyThread/source)
+include_directories(external/sigslot/)
 
 if (WIN32)
 include_directories(external/zlib/)

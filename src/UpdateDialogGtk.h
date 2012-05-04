@@ -1,11 +1,10 @@
 #pragma once
 
 #include "UpdateMessage.h"
-#include "UpdateObserver.h"
 
 #include <gtk/gtk.h>
 
-class UpdateDialogGtk : public UpdateObserver
+class UpdateDialogGtk
 {
 	public:
 		UpdateDialogGtk();
@@ -15,9 +14,9 @@ class UpdateDialogGtk : public UpdateObserver
 
 		// observer callbacks - these may be called
 		// from a background thread
-		virtual void updateError(const std::string& errorMessage);
-		virtual void updateProgress(int percentage);
-		virtual void updateFinished();
+		void updateError(const std::string& errorMessage);
+		void updateProgress(int percentage);
+		void updateFinished();
 
 	private:
 		static void finish(GtkWidget* widget, gpointer dialog);

@@ -1,5 +1,6 @@
 #include "UpdateDialogWin32.h"
 
+#include "UpdateController.h"
 #include "AppInfo.h"
 #include "Log.h"
 
@@ -58,9 +59,13 @@ void registerWindowClass()
 	RegisterClassEx(&wcex);
 }
 
-UpdateDialogWin32::UpdateDialogWin32()
+UpdateDialogWin32::UpdateDialogWin32(UpdateController* controller)
 : m_hadError(false)
 {
+	controller->installProgress.connect(this, &UpdateDialogWin32::updateProgress);
+	controller->installError.connect(this, &UpdateDialogWin32::updateError);
+	controller->finished.connect(this, &UpdateDialogWin32::updateFinished);
+
 	registerWindowClass();
 }
 

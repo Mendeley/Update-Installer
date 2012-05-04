@@ -2,25 +2,28 @@
 
 #include "Platform.h"
 #include "UpdateMessage.h"
-#include "UpdateObserver.h"
 
 #include "wincore.h"
 #include "controls.h"
 #include "stdcontrols.h"
 
-class UpdateDialogWin32 : public UpdateObserver
+#include <sigslot.h>
+
+class UpdateController;
+
+class UpdateDialogWin32 : public has_slots<>
 {
 	public:
-		UpdateDialogWin32();
+		UpdateDialogWin32(UpdateController* controller);
 		~UpdateDialogWin32();
 
 		void init();
 		void exec();
 
 		// implements UpdateObserver
-		virtual void updateError(const std::string& errorMessage);
-		virtual void updateProgress(int percentage);
-		virtual void updateFinished();
+		void updateError(const std::string& errorMessage);
+		void updateProgress(int percentage);
+		void updateFinished();
 
 		LRESULT WINAPI windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam);
 

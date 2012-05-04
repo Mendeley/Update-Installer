@@ -31,6 +31,7 @@ set (SOURCES
   Log.cpp
   ProcessUtils.cpp
   StandardDirs.cpp
+  UpdateController.cpp
   UpdateInstaller.cpp
   UpdateScript.cpp
   UpdaterOptions.cpp
@@ -65,6 +66,7 @@ set (HEADERS
   Log.h
   ProcessUtils.h
   StandardDirs.h
+  UpdateController.h
   UpdateInstaller.h
   UpdateScript.h
   UpdaterOptions.h

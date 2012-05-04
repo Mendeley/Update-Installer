@@ -8,7 +8,7 @@
 #include <string>
 #include <map>
 
-class UpdateObserver;
+class UpdateController;
 
 /** Central class responsible for installing updates,
   * launching an elevated copy of the updater if required
@@ -33,7 +33,7 @@ class UpdateInstaller
 		void setWaitPid(PLATFORM_PID pid);
 		void setForceElevated(bool elevated);
 
-		void setObserver(UpdateObserver* observer);
+		void setController(UpdateController* controller);
 
 		void run() throw ();
 
@@ -61,7 +61,7 @@ class UpdateInstaller
 		std::string m_backupDir;
 		PLATFORM_PID m_waitPid;
 		UpdateScript* m_script;
-		UpdateObserver* m_observer;
+		UpdateController* m_controller;
 		std::map<std::string,std::string> m_backups;
 		bool m_forceElevated;
 };

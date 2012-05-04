@@ -4,6 +4,7 @@
 #include "Platform.h"
 #include "ProcessUtils.h"
 #include "StringUtils.h"
+#include "UpdateController.h"
 #include "UpdateScript.h"
 #include "UpdaterOptions.h"
 
@@ -164,17 +165,18 @@ int main(int argc, char** argv)
 #ifdef PLATFORM_LINUX
 void runWithUi(int argc, char** argv, UpdateInstaller* installer)
 {
-	UpdateDialogAscii asciiDialog;
-	UpdateDialogGtkWrapper dialog;
+	UpdateController updateController;
+	UpdateDialogAscii asciiDialog(&updateController);
+	UpdateDialogGtkWrapper dialog(&updateController);
 	bool useGtk = dialog.init(argc,argv);
 	if (useGtk)
 	{
-		installer->setObserver(&dialog);
+		installer->setController(&dialog);
 	}
 	else
 	{
 		asciiDialog.init();
-		installer->setObserver(&asciiDialog);
+		installer->setController(&asciiDialog);
 	}
 	tthread::thread updaterThread(runUpdaterThread,installer);
 	if (useGtk)
@@ -188,8 +190,9 @@ void runWithUi(int argc, char** argv, UpdateInstaller* installer)
 #ifdef PLATFORM_MAC
 void runWithUi(int argc, char** argv, UpdateInstaller* installer)
 {
-	UpdateDialogCocoa dialog;
-	installer->setObserver(&dialog);
+	UpdateController updateController;
+	UpdateDialogCocoa dialog(&updateController);
+	installer->setController(&updateController);
 	dialog.init();
 	tthread::thread updaterThread(runUpdaterThread,installer);
 	dialog.exec();

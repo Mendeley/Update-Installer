@@ -6,6 +6,7 @@
 #include "AppInfo.h"
 #include "Log.h"
 #include "StringUtils.h"
+#include "UpdateController.h"
 
 @interface UpdateDialogDelegate : NSObject
 {
@@ -78,9 +79,13 @@ class UpdateDialogPrivate
 }
 @end
 
-UpdateDialogCocoa::UpdateDialogCocoa()
+UpdateDialogCocoa::UpdateDialogCocoa(UpdateController* controller)
 : d(new UpdateDialogPrivate)
 {
+	controller->installProgress.connect(this, &UpdateDialogCocoa::updateProgress);
+	controller->installError.connect(this, &UpdateDialogCocoa::updateError);
+	controller->finished.connect(this, &UpdateDialogCocoa::updateFinished);
+
 	[NSApplication sharedApplication];
 	d->pool = [[NSAutoreleasePool alloc] init];
 }
