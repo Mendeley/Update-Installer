@@ -39,11 +39,13 @@ if (APPLE)
 	set(CMAKE_OSX_DEPLOYMENT_TARGET 10.5)
 
 	# Set the SDK which the updater is built against.
-	# The available SDK versions are those which exist in /Developer/SDKs/
 	set(CMAKE_OSX_SDK 10.7)
 
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=${CMAKE_OSX_DEPLOYMENT_TARGET}")
-	set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX${CMAKE_OSX_SDK}.sdk")
+    
+	# Capture the SDK version from the output of `xcodebuild`, and remove trailing newlines
+	execute_process(COMMAND xcodebuild -version -sdk macosx Path | head -n 1 OUTPUT_VARIABLE CMAKE_OSX_SYSROOT)
+	string(REGEX REPLACE "(\r?\n)+$" "" CMAKE_OSX_SYSROOT "${CMAKE_OSX_SYSROOT}")
 endif()
 
 add_subdirectory(src)
