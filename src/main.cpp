@@ -9,7 +9,7 @@
 
 #include "tinythread.h"
 
-#if defined(PLATFORM_LINUX)
+#if defined(PLATFORM_LINUX) || defined(PLATFORM_FREEBSD)
   #include "UpdateDialogGtkFactory.h"
   #include "UpdateDialogAscii.h"
 #endif
@@ -176,7 +176,7 @@ UpdateDialog* createUpdateDialog()
 	return new UpdateDialogWin32();
 #elif defined(PLATFORM_MAC)
 	return new UpdateDialogCocoa();
-#elif defined(PLATFORM_LINUX)
+#elif defined(PLATFORM_LINUX) || defined(PLATFORM_FREEBSD)
 	UpdateDialog* dialog = UpdateDialogGtkFactory::createDialog();
 	if (!dialog)
 	{
