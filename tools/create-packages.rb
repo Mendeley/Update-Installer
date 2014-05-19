@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 
+require 'digest/sha1'
 require 'fileutils'
 require 'rubygems'
 require 'find'
@@ -82,7 +83,7 @@ def strip_prefix(string,prefix)
 end
 
 def file_sha1(path)
-		return `sha1sum "#{path}"`.split(' ')[0]
+	Digest::SHA1.file(path).to_s
 end
 
 class UpdateScriptGenerator
