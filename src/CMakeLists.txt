@@ -47,7 +47,6 @@ if (APPLE)
 	set(SOURCES ${SOURCES}
 	  MacBundle.cpp
 	  StandardDirs.mm
-	  StlSymbolsLeopard.cpp
 	  UpdateDialogCocoa.mm
 	  mac_dock_icon.cpp
 	  mac_info_plist.cpp)
