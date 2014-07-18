@@ -28,6 +28,7 @@
 
 // platform-specific type aliases
 #if defined(PLATFORM_UNIX)
+ #include <unistd.h>
  #define PLATFORM_PID pid_t
 #else
  #define PLATFORM_PID DWORD

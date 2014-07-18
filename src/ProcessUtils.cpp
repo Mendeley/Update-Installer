@@ -201,6 +201,11 @@ int ProcessUtils::runElevatedLinux(const std::string& executable,
 #endif
 
 #ifdef PLATFORM_MAC
+
+// suppress warning about AuthorizationExecuteWithPriviledges 
+// being deprecated since OS X 10.7
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 int ProcessUtils::runElevatedMac(const std::string& executable,
 						const std::list<std::string>& args)
 {
@@ -315,6 +320,7 @@ int ProcessUtils::runElevatedMac(const std::string& executable,
 		return RunElevatedFailed;
 	}
 }
+#pragma clang diagnostic pop
 #endif
 
 // convert a list of arguments in a space-separated string.
