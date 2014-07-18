@@ -21,8 +21,14 @@ extern unsigned int libupdatergtk_so_len;
 // pointers to helper functions in the GTK updater UI library
 UpdateDialogGtk* (*update_dialog_gtk_new)() = 0;
 
+#if __cplusplus >= 201103L
+#define TYPEOF(x) decltype(x)
+#else
+#define TYPEOF(x) typeof(x)
+#endif
+
 #define BIND_FUNCTION(library,function) \
-	function = reinterpret_cast<typeof(function)>(dlsym(library,#function));
+	function = reinterpret_cast<TYPEOF(function)>(dlsym(library,#function));
 
 bool extractFileFromBinary(const char* path, const void* buffer, size_t length)
 {
