@@ -629,3 +629,41 @@ std::string FileUtils::getcwd() throw (IOException)
 #endif
 }
 
+bool FileUtils::removeEmptyDirs(const char* path)
+{
+	DirIterator iter(path);
+	int fileCount = 0;
+	while (iter.next())
+	{
+		if (iter.fileName() == "." || iter.fileName() == "..")
+		{
+			continue;
+		}
+
+		if (!iter.isDir() || !removeEmptyDirs(iter.filePath().c_str()))
+		{
+			// entry is either not a directory or is a
+			// directory hierarchy which contains one or more non-directories
+			// once all empty dirs have been recursively removed
+			++fileCount;
+		}
+	}
+	if (fileCount == 0)
+	{
+		try
+		{
+			FileUtils::rmdir(path);
+			return true;
+		}
+		catch (const std::exception& ex)
+		{
+			LOG(Error,"Unable to remove empty directory " + std::string(ex.what()));
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
+

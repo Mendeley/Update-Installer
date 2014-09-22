@@ -51,6 +51,7 @@
    <name>test-dir/app-symlink</name>
    <target>../app</target>
   </file>
+  <!-- Test file in new directory !-->
   <file>
    <name>new-dir/new-dir2/new-file.txt</name>
    <hash>$TEST_FILENAME</hash>
@@ -60,8 +61,8 @@
   </file>
  </install-v3>
  <uninstall>
-  <!-- TODO - List some files to uninstall here !-->
   <file>file-to-uninstall.txt</file>
   <file>symlink-to-file-to-uninstall.txt</file>
+  <file>will-become-empty-after-update/nested/file-to-uninstall.txt</file>
  </uninstall>
 </update>

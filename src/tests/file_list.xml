@@ -45,8 +45,8 @@
   </file>
  </install>
  <uninstall>
-  <!-- TODO - List some files to uninstall here !-->
   <file>file-to-uninstall.txt</file>
   <file>symlink-to-file-to-uninstall.txt</file>
+  <file>will-become-empty-after-update/nested/file-to-uninstall.txt</file>
  </uninstall>
 </update>

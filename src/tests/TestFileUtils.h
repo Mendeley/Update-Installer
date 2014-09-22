@@ -7,4 +7,5 @@ class TestFileUtils
 		void testIsRelative();
 		void testSymlinkFileExists();
 		void testStandardDirs();
+		void testRemoveEmptyDirs();
 };

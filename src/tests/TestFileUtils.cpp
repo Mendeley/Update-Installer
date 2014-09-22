@@ -39,6 +39,25 @@ void TestFileUtils::testStandardDirs()
 	TEST_COMPARE(FileUtils::fileExists(tmpDir.data()), true);
 }
 
+void TestFileUtils::testRemoveEmptyDirs()
+{
+	std::string tmpDir = FileUtils::tempPath();
+	std::string rootDir = tmpDir + "/TestFileUtils-testRemoveEmptyDirs";
+	std::string content = "non-empty-file-content";
+
+	FileUtils::mkpath((rootDir + "/nested/empty/dir").c_str());
+	FileUtils::mkpath((rootDir + "/nested/empty2/dir").c_str());
+	FileUtils::writeFile((rootDir + "/nonempty.txt").c_str(), content.c_str(), content.size());
+	FileUtils::removeEmptyDirs(rootDir.c_str());
+
+	// root dir and the regular file should still exist
+	TEST_COMPARE(FileUtils::fileExists(rootDir.c_str()), true);
+	TEST_COMPARE(FileUtils::fileExists((rootDir + "/nonempty.txt").c_str()), true);
+
+	// the empty nested directories should have been removed
+	TEST_COMPARE(FileUtils::fileExists((rootDir + "/nested").c_str()), true);
+}
+
 int main(int,char**)
 {
 	TestList<TestFileUtils> tests;

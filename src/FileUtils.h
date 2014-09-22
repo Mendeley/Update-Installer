@@ -145,5 +145,12 @@ class FileUtils
 
 		/** Returns the current working directory of the application. */
 		static std::string getcwd() throw (IOException);
+
+		/** Recursively remove all empty directories from the path rooted at
+		 * @p path.
+		 *
+		 * Returns true if @p path was removed.
+		 */
+		static bool removeEmptyDirs(const char* path);
 };
 

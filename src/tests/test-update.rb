@@ -141,6 +141,12 @@ else
 	create_test_file("#{INSTALL_DIR}/symlink-to-file-to-uninstall.txt", "dummy file.  this is a symlink on Unix")
 end
 
+# Create a dummy file to uninstall in a directory
+# which becomes empty after the update
+empty_dir_path = "#{INSTALL_DIR}/will-become-empty-after-update/nested"
+FileUtils.mkdir_p(empty_dir_path)
+create_test_file("#{empty_dir_path}/file-to-uninstall.txt", "this file and its containing dir should be removed after the update")
+
 # Populate package source dir with files to install
 Dir.mkdir(PACKAGE_SRC_DIR)
 nested_dir_path = "#{PACKAGE_SRC_DIR}/new-dir/new-dir2"

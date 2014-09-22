@@ -448,6 +448,10 @@ void UpdateInstaller::postInstallUpdate()
 	// Info.plist file.
 	FileUtils::touch(m_installDir.c_str());
 #endif
+
+	// recursively remove any empty directories in the installation dir
+	// remove any empty directories in the installation dir
+	FileUtils::removeEmptyDirs(m_installDir.c_str());
 }
 
 void UpdateInstaller::setAutoClose(bool autoClose)
