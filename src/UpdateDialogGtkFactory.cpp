@@ -1,5 +1,6 @@
 #include "UpdateDialogGtkFactory.h"
 
+#include "FileUtils.h"
 #include "Log.h"
 #include "UpdateDialog.h"
 #include "StringUtils.h"
@@ -66,6 +67,6 @@ UpdateDialog* UpdateDialogGtkFactory::createDialog()
 
 	BIND_FUNCTION(gtkLib,update_dialog_gtk_new);
 
-    unlink(libPath);
+    FileUtils::removeFile(libPath);
 	return reinterpret_cast<UpdateDialog*>(update_dialog_gtk_new());
 }
