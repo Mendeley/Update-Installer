@@ -35,22 +35,22 @@ UpdateDialogGtk* (*update_dialog_gtk_new)() = 0;
 
 bool extractFileFromBinary(int fd, const void* buffer, size_t length)
 {
-    size_t count = write(fd,buffer,length);
-    close(fd);
-    return count >= length;
+	size_t count = write(fd,buffer,length);
+	close(fd);
+	return count >= length;
 }
 
 UpdateDialog* UpdateDialogGtkFactory::createDialog()
 {
-    char* libPath = (char*)malloc(MAX_FILE_PATH);
-    snprintf(libPath, MAX_FILE_PATH, "/tmp/mendeley-libUpdaterGtk.so.XXXXXX");
+	char* libPath = (char*)malloc(MAX_FILE_PATH);
+	snprintf(libPath, MAX_FILE_PATH, "/tmp/mendeley-libUpdaterGtk.so.XXXXXX");
 
-    int libFd = mkostemp(libPath, O_CREAT | O_WRONLY | O_TRUNC);
-    if (libFd == -1)
-    {
-        LOG(Warn,"Failed to create temporary file - " + std::string(strerror(errno)));
-        return 0;
-    }
+	int libFd = mkostemp(libPath, O_CREAT | O_WRONLY | O_TRUNC);
+	if (libFd == -1)
+	{
+		LOG(Warn,"Failed to create temporary file - " + std::string(strerror(errno)));
+		return 0;
+	}
 
 	if (!extractFileFromBinary(libFd,libupdatergtk_so,libupdatergtk_so_len))
 	{
@@ -67,6 +67,6 @@ UpdateDialog* UpdateDialogGtkFactory::createDialog()
 
 	BIND_FUNCTION(gtkLib,update_dialog_gtk_new);
 
-    FileUtils::removeFile(libPath);
+	FileUtils::removeFile(libPath);
 	return reinterpret_cast<UpdateDialog*>(update_dialog_gtk_new());
 }
