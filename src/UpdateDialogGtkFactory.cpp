@@ -37,7 +37,6 @@ UpdateDialogGtk* (*update_dialog_gtk_new)() = 0;
 bool extractFileFromBinary(int fd, const void* buffer, size_t length)
 {
 	size_t count = write(fd,buffer,length);
-	close(fd);
 	return count >= length;
 }
 
@@ -58,6 +57,7 @@ UpdateDialog* UpdateDialogGtkFactory::createDialog()
 		LOG(Warn,"Failed to load the GTK UI library - " + std::string(strerror(errno)));
 		return 0;
 	}
+	close(libFd);
 
 	void* gtkLib = dlopen(libPath,RTLD_LAZY);
 	if (!gtkLib)
