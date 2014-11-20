@@ -1,5 +1,6 @@
 #include "UpdateDialogGtkFactory.h"
 
+#include "FileUtils.h"
 #include "Log.h"
 #include "UpdateDialog.h"
 #include "StringUtils.h"
@@ -30,31 +31,32 @@ UpdateDialogGtk* (*update_dialog_gtk_new)() = 0;
 #define BIND_FUNCTION(library,function) \
 	function = reinterpret_cast<TYPEOF(function)>(dlsym(library,#function));
 
-bool extractFileFromBinary(const char* path, const void* buffer, size_t length)
+#define MAX_FILE_PATH 4096
+
+bool extractFileFromBinary(int fd, const void* buffer, size_t length)
 {
-	int fd = open(path,O_CREAT | O_WRONLY | O_TRUNC,0755);
 	size_t count = write(fd,buffer,length);
-	if (fd < 0 || count < length)
-	{
-		if (fd >= 0)
-		{
-			close(fd);
-		}
-		return false;
-	}
-	close(fd);
-	return true;
+	return count >= length;
 }
 
 UpdateDialog* UpdateDialogGtkFactory::createDialog()
 {
-	const char* libPath = "/tmp/libupdatergtk.so";
+    	char libPath[MAX_FILE_PATH];
+	strncpy(libPath, "/tmp/mendeley-libUpdaterGtk.so.XXXXXX", MAX_FILE_PATH);
 
-	if (!extractFileFromBinary(libPath,libupdatergtk_so,libupdatergtk_so_len))
+	int libFd = mkostemp(libPath, O_CREAT | O_WRONLY | O_TRUNC);
+	if (libFd == -1)
+	{
+		LOG(Warn,"Failed to create temporary file - " + std::string(strerror(errno)));
+		return 0;
+	}
+
+	if (!extractFileFromBinary(libFd,libupdatergtk_so,libupdatergtk_so_len))
 	{
 		LOG(Warn,"Failed to load the GTK UI library - " + std::string(strerror(errno)));
 		return 0;
 	}
+	close(libFd);
 
 	void* gtkLib = dlopen(libPath,RTLD_LAZY);
 	if (!gtkLib)
@@ -64,6 +66,7 @@ UpdateDialog* UpdateDialogGtkFactory::createDialog()
 	}
 
 	BIND_FUNCTION(gtkLib,update_dialog_gtk_new);
+
+	FileUtils::removeFile(libPath);
 	return reinterpret_cast<UpdateDialog*>(update_dialog_gtk_new());
 }
-
