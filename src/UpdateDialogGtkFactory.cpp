@@ -11,6 +11,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <vector>
 
 class UpdateDialogGtk;
 
@@ -31,6 +32,8 @@ UpdateDialogGtk* (*update_dialog_gtk_new)() = 0;
 #define BIND_FUNCTION(library,function) \
 	function = reinterpret_cast<TYPEOF(function)>(dlsym(library,#function));
 
+#define MAX_FILE_PATH 4096
+
 bool extractFileFromBinary(int fd, const void* buffer, size_t length)
 {
 	size_t count = write(fd,buffer,length);
@@ -40,7 +43,8 @@ bool extractFileFromBinary(int fd, const void* buffer, size_t length)
 
 UpdateDialog* UpdateDialogGtkFactory::createDialog()
 {
-	char* libPath = strdup("/tmp/mendeley-libUpdaterGtk.so.XXXXXX");
+    	char libPath[MAX_FILE_PATH];
+	strncpy(libPath, "/tmp/mendeley-libUpdaterGtk.so.XXXXXX", MAX_FILE_PATH);
 
 	int libFd = mkostemp(libPath, O_CREAT | O_WRONLY | O_TRUNC);
 	if (libFd == -1)
