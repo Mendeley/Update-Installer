@@ -40,7 +40,7 @@ bool extractFileFromBinary(int fd, const void* buffer, size_t length)
 
 UpdateDialog* UpdateDialogGtkFactory::createDialog()
 {
-	char* libPath = strdup(std::string("/tmp/mendeley-libUpdaterGtk.so.XXXXXX").c_str());
+	char* libPath = strdup("/tmp/mendeley-libUpdaterGtk.so.XXXXXX");
 
 	int libFd = mkostemp(libPath, O_CREAT | O_WRONLY | O_TRUNC);
 	if (libFd == -1)
