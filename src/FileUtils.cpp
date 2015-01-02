@@ -111,7 +111,7 @@ int FileUtils::fileMode(const char* path) throw (IOException)
 	{
 		throw IOException("Error reading file permissions for " + std::string(path));
 	}
-	return fileInfo.st_mode;
+	return *reinterpret_cast<int*>(&fileInfo.st_mode);
 #else
 	// not implemented for Windows
 	return 0;
