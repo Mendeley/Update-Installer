@@ -36,7 +36,10 @@ UpdateDialogGtk* (*update_dialog_gtk_new)() = 0;
 bool extractFileFromBinary(int fd, const void* buffer, size_t length)
 {
 	ssize_t count = write(fd,buffer,length);
-	if(count < 0) return false;
+	if(count < 0)
+	{
+		return false;
+	}
 	return static_cast<size_t>(count) >= length;
 }
 
