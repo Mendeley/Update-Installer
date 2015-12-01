@@ -1,3 +1,15 @@
+
+# Set the deployment target
+# According to
+#   https://cmake.org/cmake/help/v3.0/variable/CMAKE_OSX_DEPLOYMENT_TARGET.html
+# this has to be done before the first project() invocation.
+#
+# However, inside the mendeley desktop build system this means that the following
+# line will actually be ignored, since we're doing that already on the top level
+# of the build system.
+
+set(CMAKE_OSX_DEPLOYMENT_TARGET 10.6)
+
 project(updater)
 
 cmake_minimum_required(VERSION 2.6)
@@ -50,13 +62,6 @@ if (APPLE)
     # is required, removing the other architecture will reduce the size
     # of the updater binary
     set(CMAKE_OSX_ARCHITECTURES i386;x86_64)
-
-    # Build the updater so that it works on OS X 10.6 and above.
-    if (NOT (DEFINED MIN_OSX_DEPLOYMENT_VERSION))
-      set(MIN_OSX_DEPLOYMENT_VERSION 10.6)
-    endif()
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mmacosx-version-min=${MIN_OSX_DEPLOYMENT_VERSION}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=${MIN_OSX_DEPLOYMENT_VERSION}")
 endif()
 
 add_subdirectory(src)
