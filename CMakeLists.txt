@@ -8,7 +8,11 @@
 # line will actually be ignored, since we're doing that already on the top level
 # of the build system.
 
-set(CMAKE_OSX_DEPLOYMENT_TARGET 10.6)
+if(SUPPORT_OSX_SNOW_LEOPARD)
+	set(CMAKE_OSX_DEPLOYMENT_TARGET 10.6)
+else()
+	set(CMAKE_OSX_DEPLOYMENT_TARGET 10.7)
+endif()
 
 project(updater)
 
