@@ -21,6 +21,26 @@ endif()
 
 add_definitions(-DTIXML_USE_STL)
 
+if (NOT DEFINED APPINFO_APPLICATION_NAME)
+	set(APPINFO_APPLICATION_NAME "\"Mendeley Desktop\"")
+endif()
+add_definitions(-DAPPINFO_APPLICATION_NAME=${APPINFO_APPLICATION_NAME})
+
+if (NOT DEFINED APPINFO_COMPANY_NAME)
+	set(APPINFO_COMPANY_NAME "\"Mendeley Ltd.\"")
+endif()
+add_definitions(-DAPPINFO_COMPANY_NAME=${APPINFO_COMPANY_NAME})
+
+IF (NOT DEFINED APPINFO_UPDATER_NAME)
+	set(APPINFO_UPDATER_NAME "\"Mendeley Updater\"")
+endif()
+add_definitions(-DAPPINFO_UPDATER_NAME=${APPINFO_UPDATER_NAME})
+
+IF (NOT DEFINED APPINFO_URL)
+	set(APPINFO_URL "\"http://www.mendeley.com/download-mendeley-desktop\"")
+endif()
+add_definitions(-DAPPINFO_URL=${APPINFO_URL})
+
 set (SOURCES
   AppInfo.cpp
   DirIterator.cpp

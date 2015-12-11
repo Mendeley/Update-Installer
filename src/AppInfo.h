@@ -24,16 +24,16 @@ class AppInfo
 
 inline std::string AppInfo::name()
 {
-	return "Mendeley Updater";
+	return APPINFO_UPDATER_NAME;
 }
 
 inline std::string AppInfo::appName()
 {
-	return "Mendeley Desktop";
+	return APPINFO_APPLICATION_NAME;
 }
 
 inline std::string AppInfo::organizationName()
 {
-	return "Mendeley Ltd.";
+	return APPINFO_COMPANY_NAME;
 }
 

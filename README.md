@@ -78,8 +78,8 @@ Once the updater has been started, it:
 
  To customize the application name, organization and messages displayed by the updater:
 
-  1. Edit the AppInfo class (in AppInfo.h, AppInfo.cpp) to set the name
-     of the application and associated organization.
+  1. Compile passing to cmake the strings you want for the AppInfo class, for
+     example: `cmake .. -DDAPPINFO_APPLICATION_NAME="\"My App Name\""`
   2. Replace the icons in src/resources
   3. Change the product name and organization in src/resources/updater.rc
   4. If you are building the updater on Windows and have a suitable Authenticode
