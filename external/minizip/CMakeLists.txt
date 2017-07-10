@@ -49,9 +49,12 @@ if (UNIX)
 
 	target_link_libraries(minizip z ${BZ2_LIB_NAME})
 else()
+
+	set(BZ2_LIB_NAME "${CMAKE_CURRENT_SOURCE_DIR}/../bzip2/libbz2d.lib")
+
 	target_link_libraries(minizip
 		"${CMAKE_CURRENT_SOURCE_DIR}/../zlib/prebuilt/zlib_static.lib"
-		"${CMAKE_CURRENT_SOURCE_DIR}/../bzip2/libbz2_static.lib"
+		${BZ2_LIB_NAME}
 	)
 endif()
 

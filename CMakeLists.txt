@@ -1,4 +1,4 @@
-
+﻿
 # Set the deployment target
 # According to
 #   https://cmake.org/cmake/help/v3.0/variable/CMAKE_OSX_DEPLOYMENT_TARGET.html
@@ -45,8 +45,9 @@ if (WIN32)
     # type rather than setting it in the CMAKE_(C|CXX)_FLAGS vars
     # because otherwise they are overridden by the /MT switch in the
     # default flags for CMAKE_(C|CXX)_FLAGS_(DEBUG|RELWITHDEBINFO)
-    set(CMAKE_CXX_FLAGS_DEBUG "/MT")
-    set(CMAKE_C_FLAGS_DEBUG "/MT")
+
+    set(CMAKE_CXX_FLAGS_DEBUG "/MTd")
+    set(CMAKE_C_FLAGS_DEBUG "/MTd")
 
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/MT")
     set(CMAKE_C_FLAGS_RELWITHDEBINFO "/MT")
