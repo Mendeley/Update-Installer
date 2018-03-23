@@ -25,6 +25,17 @@ if (APPLE OR ${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
 	add_definitions("-DUSE_FILE32API")
 endif()
 
+if(WIN32)
+    set(BZ2_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../bzip2")
+    foreach(win_file blocksort.c bzlib.c compress.c crctable.c decompress.c huffman.c randtable.c)
+        list(APPEND SOURCES ${BZ2_DIR}/${win_file})
+    endforeach()
+
+    foreach(win_file bzlib.h bzlib_private.h)
+        list(APPEND HEADERS ${BZ2_DIR}/${win_file})
+    endforeach()
+endif()
+
 add_definitions("-DHAVE_BZIP2")
 
 add_library(minizip
@@ -49,13 +60,10 @@ if (UNIX)
 
 	target_link_libraries(minizip z ${BZ2_LIB_NAME})
 else()
-
-	set(BZ2_LIB_NAME "${CMAKE_CURRENT_SOURCE_DIR}/../bzip2/libbz2d.lib")
-
-	target_link_libraries(minizip
-		"${CMAKE_CURRENT_SOURCE_DIR}/../zlib/prebuilt/zlib_static.lib"
-		${BZ2_LIB_NAME}
-	)
+    target_include_directories(minizip PRIVATE ${BZ2_DIR})
+    target_link_libraries(minizip
+        "${CMAKE_CURRENT_SOURCE_DIR}/../zlib/prebuilt/zlib_static.lib"
+    )
 endif()
 
 
