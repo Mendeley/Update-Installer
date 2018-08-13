@@ -150,7 +150,7 @@ int main(int argc, char** argv)
 	if (options.mode == UpdateInstaller::Main)
 	{
 		LOG(Info, "Showing updater UI - auto close? " + intToStr(options.autoClose));
-		std::auto_ptr<UpdateDialog> dialog(createUpdateDialog());
+		std::unique_ptr<UpdateDialog> dialog(createUpdateDialog());
 		dialog->setAutoClose(options.autoClose);
 		dialog->init(argc, argv);
 		installer.setObserver(dialog.get());
