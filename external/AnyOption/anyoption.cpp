@@ -956,7 +956,7 @@ AnyOption::readFile( const char* fname )
                 return NULL;
         }
         is.seekg (0, ios::end);
-        length = is.tellg();
+        length = static_cast<int>(is.tellg());
         is.seekg (0, ios::beg);
         buffer = (char*) malloc(length*sizeof(char));
         is.read (buffer,length);

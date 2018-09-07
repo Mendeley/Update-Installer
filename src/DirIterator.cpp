@@ -46,18 +46,15 @@ bool DirIterator::next()
 	m_entry = readdir(m_dir);
 	return m_entry != 0;
 #else
-	bool result;
 	if (m_firstEntry)
 	{
 		m_firstEntry = false;
 		return m_findHandle != INVALID_HANDLE_VALUE;
 	}
-	else
-	{
-		result = FindNextFile(m_findHandle,&m_findData);
-	}
-	return result;
+	
+	return FindNextFile(m_findHandle, &m_findData) != FALSE; // to prevent warning C4800: 'BOOL': forcing value to bool*
 #endif
+// (*) Casting the expression to type bool will not disable the warning: https://msdn.microsoft.com/en-us/library/b6801kcy.aspx
 }
 
 std::string DirIterator::fileName() const
