@@ -1,0 +1,25 @@
+# patterns to ignore
+*.a
+*.cmake
+*.i
+*.so
+*.sw?
+
+# paths to ignore
+CMakeCache.txt
+src/tests/???app
+src/tests/updater_Test*
+src/updater
+src/zip-tool
+
+# Auto generated files to ignore
+external/minizip/Makefile
+external/AnyOption/Makefile
+external/tinyxml/Makefile
+external/TinyThread/Makefile
+src/tests/Makefile
+src/Makefile
+Makefile
+
+# dirs to ignore
+**/CMakeFiles/
