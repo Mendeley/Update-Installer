@@ -8,10 +8,12 @@
 # line will actually be ignored, since we're doing that already on the top level
 # of the build system.
 
-if(SUPPORT_OSX_SNOW_LEOPARD)
-	set(CMAKE_OSX_DEPLOYMENT_TARGET 10.6)
-else()
-	set(CMAKE_OSX_DEPLOYMENT_TARGET 10.7)
+if(NOT MENDELEY_DESKTOP_BUILD)
+	if(SUPPORT_OSX_SNOW_LEOPARD)
+		set(CMAKE_OSX_DEPLOYMENT_TARGET 10.6)
+	else()
+		set(CMAKE_OSX_DEPLOYMENT_TARGET 10.7)
+	endif()
 endif()
 
 project(updater)
@@ -62,11 +64,13 @@ else()
     set(CMAKE_C_FLAGS_RELEASE "-Os")
 endif()
 
-if (APPLE)
-    # Build the updater as a dual 32/64bit binary.  If only one architecture
-    # is required, removing the other architecture will reduce the size
-    # of the updater binary
-    set(CMAKE_OSX_ARCHITECTURES i386;x86_64)
+if(NOT MENDELEY_DESKTOP_BUILD)
+    if (APPLE)
+        # Build the updater as a dual 32/64bit binary.  If only one architecture
+        # is required, removing the other architecture will reduce the size
+        # of the updater binary
+        set(CMAKE_OSX_ARCHITECTURES i386;x86_64)
+    endif()
 endif()
 
 add_subdirectory(src)
