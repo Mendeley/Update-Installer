@@ -19,3 +19,14 @@ This directory contains a set of tools for preparing auto-updates.
     This is the simplest possible package configuration, where all files for
 	a release are placed in a single package.  This means that the whole
 	package will need to be downloaded to install the update.
+
+ * auto-create-packages.rb
+	
+	<input old version dir> <input new version dir> <output dir> -v <version> [-o <old version>]
+	
+	This tool generates a zip file from difference of old version and new version of an application files.
+	The zip file name contains versions like this:  OldVersion_NewVersion.zip
+	The zip file contains generated package (out.zip) an file_list.xml and  updater.exe and libbz2.dll 
+	this file needed in user system for update.
+	Note: updater.exe is build in Windows 10 with Visual Studio 2015
+	
