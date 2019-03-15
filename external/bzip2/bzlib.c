@@ -1375,9 +1375,11 @@ const char * BZ_API(BZ2_bzlibVersion)(void)
 #if defined(_WIN32) || defined(OS2) || defined(MSDOS)
 #   include <fcntl.h>
 #   include <io.h>
-#   define SET_BINARY_MODE(file) setmode(fileno(file),O_BINARY)
+#   define SET_BINARY_MODE(file) _setmode(_fileno(file), O_BINARY)
+#   define FDOPEN(file, mode)    _fdopen(file, mode)
 #else
 #   define SET_BINARY_MODE(file)
+#   define FDOPEN(file, mode)     fdopen(file, mode)
 #endif
 static
 BZFILE * bzopen_or_bzdopen
@@ -1428,7 +1430,7 @@ BZFILE * bzopen_or_bzdopen
 #ifdef BZ_STRICT_ANSI
       fp = NULL;
 #else
-      fp = fdopen(fd,mode2);
+      fp = FDOPEN(fd,mode2);
 #endif
    }
    if (fp == NULL) return NULL;

@@ -11,6 +11,7 @@
 
 #ifdef PLATFORM_WINDOWS
 #include <windows.h>
+#include <string>
 #else
 #include <stdlib.h>
 #include <sys/wait.h>
@@ -438,8 +439,8 @@ int ProcessUtils::runWindows(const std::string& _executable,
 	PROCESS_INFORMATION processInfo;
 	ZeroMemory(&processInfo,sizeof(processInfo));
 
-	char* commandLineStr = strdup(commandLine.c_str());
-	bool result = CreateProcess(
+	LPSTR commandLineStr = const_cast<LPSTR>(std::string(commandLine).c_str());
+	BOOL result = CreateProcess(
 	    executable.c_str(),
 		commandLineStr,
 		0 /* process attributes */,

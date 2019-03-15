@@ -5,7 +5,7 @@ find_package(Threads REQUIRED)
 include(GenerateCppResourceFile)
 
 if (UNIX)
-	add_definitions(-Wall -Werror -Wconversion)
+        add_definitions(-Wall -Werror -Wconversion -std=c++11)
 endif()
 
 if (UNIX AND NOT APPLE)
