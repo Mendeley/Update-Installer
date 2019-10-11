@@ -272,6 +272,7 @@ updater_binary_input_path = nil
 target_version = nil
 target_platform = nil
 zip_flags = nil
+include_updater = nil
 
 OptionParser.new do |parser|
 	parser.banner = "#{$0} [options] <input dir> <config file> <output dir>"
@@ -286,6 +287,9 @@ OptionParser.new do |parser|
 	end
 	parser.on(nil,"--bzip2","Use bzip2 compression (requires that 'zip' supports the -Z bz2 argument)") do
 		zip_flags = "-Z bzip2"
+	end
+	parser.on(nil,"--include-updater","Don't skip the updater executable file when creating packages") do
+		include_updater = true
 	end
 end.parse!
 
@@ -335,13 +339,13 @@ package_file_map.each do |package,files|
 
 	quoted_files = []
 	files.each do |file|
-		# do not package the updater binary into a zip file -
-		# it must be downloaded uncompressed
 		if package_config.is_updater(file)
 			if (!updater_binary_input_path)
 				updater_binary_input_path = file
 			end
-			next
+			# Unless told otherwise, do not package the updater binary into the
+			# zip file - to be be downloaded uncompressed in a separate package.
+			next unless include_updater
 		end
 		quoted_files << "\"#{strip_prefix(file,input_dir)}\""
 	end
